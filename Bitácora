@@ -1,0 +1,26 @@
+creación de carpeta en escritorio *Proyectocan*, en Gaia la carpeta se llamó *Proyecto*, todo se guardó aquí.
+seq referencia CPO667212.1 con nombre Seq2SPse.fasta.fasta
+archivo SRA SRR17023946: fastq-dump --split-3 SRR17023946. Archivo pareado que generó los archivos SRR17023946_1.fastq y SRR17023946_2.fastq
+A SRR17023946_1.fastq y SRR17023946_2.fastq se les realizaron análisis de calidad: fastqc SRR17023946_*.fastq.
+filtrado de secuencias: fastp -i SRR17023946_1.fastq -I SRR17023946_2.fastq -o SRR1filt.fastq -O SRR2filt.fastq >& Resultfastp.log: nombre de filtrados SRR1filt.fastq y SRR2filt.fastq 
+archivos subidos a Gaia para poder realizar bowtie.
+activar bowtie2 conda activate bowtie2
+armar índice a genoma de referencia: bowtie2-build -f Seq2SPse.fasta.fasta  Spseu. Archivos generados: Spseu.1.bt2, Spseu.2.bt2, Spseu.3.bt2, Spseu.4.bt2, Spseu.rev.1.bt2 y Spseu.rev.2.bt2
+Mapeo de reads al genoma de referencia: bowtie2 --maxins 1000 -x Spseu -1 SRR1filt.fastq -2 SRR2filt.fastq -S Spseu.sam. Archivos generados: Spseu.sam 
+filtración: awk '$3!="*"' Spseu.sam >300filt.sam
+Descarga de secuencia JF275103.1
+blast: makeblastdb -in SpseuJF.fasta -dbtype nucl -out SpseuJFDB. Archivos generados: SpseuJFDB.ndb, SpseuJFDB.nhr, SpseuJFDB.nin, SpseuJFDB.not, SpseuJFDB.nsq, SpseuJFDB.ntf y SpseuJFDB.nto
+blast: blastn -db SpseuJFDB -query Seq2SPse.fasta.fasta -evalue 1e-5 -max_target_seqs 4 -outfmt "7 qseqid length evalue qcovs qcovshsp" -num_threads 4 -out Spseublast.tab. Archivo generado: Spseublast.tab
+JF275103.1 enviada a Augustus: Staphylococcus aureus, both strands y few alternative script.
+Proteínas guardadas en archivos fasta, enviadas a Interproscan.
+
+Archivos en Gaia: 300filt.sam                SRR17023946_2_fastqc.html  Spseu.2.bt2      SpseuDB.pdb  SpseuDB.pto    SpseuJFDB.nsq
+Resultfastp.log            SRR17023946_2_fastqc.zip   Spseu.3.bt2      SpseuDB.phr  SpseuJF.fasta  SpseuJFDB.ntf
+SRR17023946_1.fastq        SRR1filt.fastq             Spseu.4.bt2      SpseuDB.pin  SpseuJFDB.ndb  SpseuJFDB.nto
+SRR17023946_1_fastqc.html  SRR2filt.fastq             Spseu.rev.1.bt2  SpseuDB.pot  SpseuJFDB.nhr  Spseublast.tab
+SRR17023946_1_fastqc.zip   Seq2SPse.fasta.fasta       Spseu.rev.2.bt2  SpseuDB.psq  SpseuJFDB.nin  fastp.html
+SRR17023946_2.fastq        Spseu.1.bt2                Spseu.sam        SpseuDB.ptf  SpseuJFDB.not  fastp.json
+
+Archivos en computadora: Prot1.fasta  ProtSpseu.fasta      SRR17023946_1_fastqc.html  SRR1filt.fastq        SpseuJF.fasta
+Prot2.fasta  Resultfastp.log      SRR17023946_2.fastq        SRR2filt.fastq
+Prot3.fasta  SRR17023946_1.fastq  SRR17023946_2_fastqc.html  Seq2SPse.fasta.fasta
